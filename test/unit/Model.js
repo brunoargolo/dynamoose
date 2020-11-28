@@ -1219,7 +1219,7 @@ describe("Model", () => {
 					expect(user.name).to.eql("Charlie");
 				});
 
-				it("Should return object that is an instance of Document", async () => {
+		  		it("Should return object that is an instance of Document", async () => {
 					getItemFunction = () => Promise.resolve({"Item": {"id": {"N": "1"}, "name": {"S": "Charlie"}}});
 					const user = await callType.func(User).bind(User)(1);
 					expect(user).to.be.an.instanceof(User);
@@ -2138,7 +2138,7 @@ describe("Model", () => {
 	describe("Model.update", () => {
 		let User, updateItemParams, updateItemFunction;
 		beforeEach(() => {
-			User = dynamoose.model("User", {"id": Number, "name": String, "age": Number});
+			User = dynamoose.model("User", {"id": Number, "name": String, "age": [Number, String]});
 			dynamoose.aws.ddb.set({
 				"updateItem": (params) => {
 					updateItemParams = params;
@@ -2157,7 +2157,7 @@ describe("Model", () => {
 
 		const functionCallTypes = [
 			{"name": "Promise", "func": (Model) => Model.update},
-			{"name": "Callback", "func": (Model) => util.promisify(Model.update)}
+		    {"name": "Callback", "func": (Model) => util.promisify(Model.update)}
 		];
 		functionCallTypes.forEach((callType) => {
 			describe(callType.name, () => {
@@ -3966,7 +3966,7 @@ describe("Model", () => {
 					}
 				});
 			});
-
+			
 			it("Should print warning if passing callback", () => {
 				let result;
 				const oldWarn = console.warn;
